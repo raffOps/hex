@@ -8,11 +8,11 @@ import (
 	"net/http"
 )
 
-func Start(conn interface{}) {
+func Start(customerRepo repository.CustomerRepository) {
 	router := mux.NewRouter()
 	handlers := NewCustomerHandlers(
 		service.NewDefaultCustomerService(
-			repository.NewCustomerRepositoryPostgres(conn),
+			customerRepo,
 		),
 	)
 	//handlers := NewCustomerHandlers(
