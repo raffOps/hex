@@ -2,12 +2,19 @@ package main
 
 import (
 	"github.com/rjribeiro/hex/cmd/hex/app/rest"
+	"github.com/rjribeiro/hex/cmd/hex/logger"
 	"github.com/rjribeiro/hex/cmd/hex/repository"
 )
-import "github.com/rjribeiro/hex/cmd/hex/database"
 
 func main() {
-	postgresConn := database.GetPostgresConnection()
-	repo := repository.NewCustomerRepositoryPostgres(postgresConn)
-	rest.Start(repo)
+	logger.Info("Starting application")
+
+	postgresConn := repository.GetPostgresConnection()
+	defer repository.ClosePostgresConnection(postgresConn)
+
+	customerRepo := repository.NewCustomerRepositoryPostgres(postgresConn)
+	accountRepo := repository.NewAccountRepositoryPostgres(postgresConn)
+	//accountRepo := repository.NewAccountRepositoryStub()
+
+	rest.Start(customerRepo, accountRepo)
 }

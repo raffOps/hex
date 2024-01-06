@@ -1,6 +1,9 @@
 package repository
 
-import "time"
+import (
+	"github.com/rjribeiro/hex/cmd/hex/errs"
+	"time"
+)
 import "github.com/rjribeiro/hex/cmd/hex/domain"
 
 type CustomerRepositoryStub struct {
@@ -15,7 +18,7 @@ func NewCustomerRepositoryStub() CustomerRepositoryStub {
 			City:        "New York",
 			ZipCode:     "10001",
 			DateOfBirth: time.Date(1980, 1, 1, 0, 0, 0, 0, time.UTC),
-			Status:      "active",
+			Status:      true,
 		},
 		{
 			Id:          "2",
@@ -23,7 +26,7 @@ func NewCustomerRepositoryStub() CustomerRepositoryStub {
 			City:        "Los Angeles",
 			ZipCode:     "90001",
 			DateOfBirth: time.Date(1985, 1, 1, 0, 0, 0, 0, time.UTC),
-			Status:      "inactive",
+			Status:      false,
 		},
 	}
 
@@ -32,4 +35,14 @@ func NewCustomerRepositoryStub() CustomerRepositoryStub {
 
 func (c CustomerRepositoryStub) FindAll() ([]domain.Customer, error) {
 	return c.customers, nil
+}
+
+func (c CustomerRepositoryStub) FindById(id string) (*domain.Customer, error) {
+	var domainCustomer domain.Customer
+	for _, customer := range c.customers {
+		if id == customer.Id {
+			return &customer, nil
+		}
+	}
+	return &domainCustomer, errs.CustomerNotFoundError{Id: id}
 }
