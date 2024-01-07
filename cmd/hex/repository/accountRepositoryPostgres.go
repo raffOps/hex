@@ -22,7 +22,7 @@ type account struct {
 	Status      bool
 }
 
-func (a account) ToDomainAccount() domain.Account {
+func (a account) toDomainAccount() domain.Account {
 	return domain.Account{
 		AccountId:   a.AccountId,
 		CustomerId:  a.CustomerId,
@@ -80,7 +80,7 @@ func (s AccountRepositoryPostgres) FindById(id string) (*domain.Account, error) 
 	if result.Error != nil {
 		return nil, errs.RepositoryError{Err: result.Error}
 	}
-	domainAccount := account.ToDomainAccount()
+	domainAccount := account.toDomainAccount()
 	return &domainAccount, nil
 }
 
@@ -98,7 +98,7 @@ func (s AccountRepositoryPostgres) UpdateAmount(accountId string, amount float64
 	if result.Error != nil {
 		return nil, errs.RepositoryError{Err: result.Error}
 	}
-	domainAccount := account.ToDomainAccount()
+	domainAccount := account.toDomainAccount()
 	return &domainAccount, nil
 }
 

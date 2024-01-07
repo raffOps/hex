@@ -2,15 +2,15 @@ package controllers
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/rjribeiro/hex/cmd/hex/service"
+	"github.com/rjribeiro/hex/cmd/hex/domain"
 	"net/http"
 )
 
 type CustomerHandlers struct {
-	service service.CustomerService
+	service domain.CustomerService
 }
 
-func NewCustomerHandlers(service service.CustomerService) CustomerHandlers {
+func NewCustomerHandlers(service domain.CustomerService) CustomerHandlers {
 	return CustomerHandlers{service: service}
 }
 

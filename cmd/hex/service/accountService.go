@@ -6,11 +6,6 @@ import (
 	"github.com/rjribeiro/hex/cmd/hex/logger"
 )
 
-type AccountService interface {
-	NewAccount(account domain.Account) (*domain.Account, error)
-	Deposit(accountId string, amountToDeposit float64) (*domain.Account, error)
-}
-
 type DefaultAccountService struct {
 	accountRepo  domain.AccountRepository
 	customerRepo domain.CustomerRepository

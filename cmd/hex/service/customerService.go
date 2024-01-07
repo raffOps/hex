@@ -5,11 +5,6 @@ import (
 	"github.com/rjribeiro/hex/cmd/hex/errs"
 )
 
-type CustomerService interface {
-	GetAllCustomer() ([]domain.Customer, error)
-	GetCustomerById(string) (*domain.Customer, error)
-}
-
 type DefaultCustomerService struct {
 	repo domain.CustomerRepository
 }

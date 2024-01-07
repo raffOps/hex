@@ -3,19 +3,19 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/rjribeiro/hex/cmd/hex/domain"
 	"github.com/rjribeiro/hex/cmd/hex/input/rest/dto"
 	"github.com/rjribeiro/hex/cmd/hex/logger"
-	"github.com/rjribeiro/hex/cmd/hex/service"
 	"net/http"
 	"strconv"
 )
 
 type AccountHandlers struct {
-	accountService  service.AccountService
-	customerService service.CustomerService
+	accountService  domain.AccountService
+	customerService domain.CustomerService
 }
 
-func NewAccountHandlers(accountService service.AccountService, customerService service.CustomerService) AccountHandlers {
+func NewAccountHandlers(accountService domain.AccountService, customerService domain.CustomerService) AccountHandlers {
 	return AccountHandlers{accountService: accountService, customerService: customerService}
 }
 
