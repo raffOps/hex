@@ -3,8 +3,8 @@ package rest
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/rjribeiro/hex/cmd/hex/app/rest/handlersApp"
 	"github.com/rjribeiro/hex/cmd/hex/domain"
+	"github.com/rjribeiro/hex/cmd/hex/input/rest/controllers"
 	"github.com/rjribeiro/hex/cmd/hex/logger"
 	"github.com/rjribeiro/hex/cmd/hex/service"
 	"net/http"
@@ -26,12 +26,12 @@ func sanityCheck() {
 func Start(customerRepo domain.CustomerRepository, accountRepo domain.AccountRepository) {
 	sanityCheck()
 	router := mux.NewRouter()
-	customerHandler := handlersApp.NewCustomerHandlers(
+	customerHandler := controllers.NewCustomerHandlers(
 		service.NewDefaultCustomerService(
 			customerRepo,
 		),
 	)
-	accountHandler := handlersApp.NewAccountHandlers(
+	accountHandler := controllers.NewAccountHandlers(
 		service.NewDefaultAccountService(
 			accountRepo,
 			customerRepo,

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/rjribeiro/hex/cmd/hex/app/rest"
+	"github.com/rjribeiro/hex/cmd/hex/input/rest"
 	"github.com/rjribeiro/hex/cmd/hex/logger"
 	"github.com/rjribeiro/hex/cmd/hex/repository"
 )

@@ -2,13 +2,12 @@ package service
 
 import (
 	"github.com/rjribeiro/hex/cmd/hex/domain"
-	"github.com/rjribeiro/hex/cmd/hex/dto"
 	"github.com/rjribeiro/hex/cmd/hex/errs"
 )
 
 type CustomerService interface {
-	GetAllCustomer() ([]dto.CustomerResponse, error)
-	GetCustomerById(string) (*dto.CustomerResponse, error)
+	GetAllCustomer() ([]domain.Customer, error)
+	GetCustomerById(string) (*domain.Customer, error)
 }
 
 type DefaultCustomerService struct {
@@ -19,23 +18,18 @@ func NewDefaultCustomerService(repo domain.CustomerRepository) DefaultCustomerSe
 	return DefaultCustomerService{repo: repo}
 }
 
-func (s DefaultCustomerService) GetAllCustomer() ([]dto.CustomerResponse, error) {
-	customer, err := s.repo.FindAll()
+func (s DefaultCustomerService) GetAllCustomer() ([]domain.Customer, error) {
+	customers, err := s.repo.FindAll()
 	if err != nil {
 		return nil, err
 	}
-	var customerResponse []dto.CustomerResponse
-	for _, c := range customer {
-		customerResponse = append(customerResponse, domain.ToDtoCustomer(c))
-	}
-	return customerResponse, nil
+	return customers, nil
 }
 
-func (s DefaultCustomerService) GetCustomerById(id string) (*dto.CustomerResponse, error) {
-	c, err := s.repo.FindById(id)
-	if c == nil && err == nil {
+func (s DefaultCustomerService) GetCustomerById(id string) (*domain.Customer, error) {
+	customer, err := s.repo.FindById(id)
+	if customer == nil && err == nil {
 		return nil, errs.CustomerNotFoundError{Id: id}
 	}
-	customer := domain.ToDtoCustomer(*c)
-	return &customer, nil
+	return customer, nil
 }

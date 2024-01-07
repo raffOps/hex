@@ -1,4 +1,4 @@
-package handlersApp
+package controllers
 
 import (
 	"encoding/json"

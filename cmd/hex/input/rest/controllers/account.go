@@ -1,9 +1,9 @@
-package handlersApp
+package controllers
 
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/rjribeiro/hex/cmd/hex/dto"
+	"github.com/rjribeiro/hex/cmd/hex/input/rest/dto"
 	"github.com/rjribeiro/hex/cmd/hex/logger"
 	"github.com/rjribeiro/hex/cmd/hex/service"
 	"net/http"
@@ -20,19 +20,22 @@ func NewAccountHandlers(accountService service.AccountService, customerService s
 }
 
 func (ah AccountHandlers) Save(w http.ResponseWriter, r *http.Request) {
-	var account dto.Account
+	var account dto.AccountRequest
 	err := json.NewDecoder(r.Body).Decode(&account)
 	if err != nil {
 		HandleError(w, err)
 		return
 	}
-	savedAccount, err := ah.accountService.NewAccount(account)
+	domainAccount := dto.FromDtoAccountRequest(account)
+	savedAccount, err := ah.accountService.NewAccount(domainAccount)
 	if err != nil {
 		HandleError(w, err)
 		return
 	}
 
-	writeResponse(w, http.StatusCreated, savedAccount)
+	accountResponse := dto.ToDtoAccountResponse(*savedAccount)
+
+	writeResponse(w, http.StatusCreated, accountResponse)
 }
 
 func (ah AccountHandlers) Deposit(w http.ResponseWriter, r *http.Request) {
@@ -41,11 +44,13 @@ func (ah AccountHandlers) Deposit(w http.ResponseWriter, r *http.Request) {
 	amountParsed, _ := strconv.ParseFloat(amount, 64)
 	logger.Debug("depositing amount " + amount + " to account " + id)
 
-	depositedAccount, err := ah.accountService.Deposit(id, amountParsed)
+	domainAccount, err := ah.accountService.Deposit(id, amountParsed)
 	if err != nil {
 		HandleError(w, err)
 		return
 	}
 
-	writeResponse(w, http.StatusOK, depositedAccount)
+	depositAccountResponse := dto.ToDepositResponse(*domainAccount)
+
+	writeResponse(w, http.StatusOK, depositAccountResponse)
 }
